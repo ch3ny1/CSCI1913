@@ -1,0 +1,242 @@
+<!-- Created by Bracy 0.4 on Monday, October 21, 2019 at 5:25 PM CDT -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Computer Laboratory 7
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 7</b>
+   <br />
+   <b>CS<small>CI</small> 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Development</b>
+   <br />
+   <b>October 22&#8211;23, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   Two algorithms for searching arrays, called <i>linear search</i> and
+   <i>binary search,</i> were discussed in the lectures. The linear search
+   algorithm did only one comparison per iteration, but it needed many
+   iterations. The binary search algorithm did more than one comparison per
+   iteration, but it needed few iterations. As a result, linear search should
+   be more efficient than binary search for small arrays, and binary search
+   should be more efficient than linear search for large arrays. How big must
+   an array be before binary search becomes more efficient than linear search?
+   You will determine this experimentally.
+  </p>
+  <p>
+   <b>1. Implementation.</b>
+  </p>
+  <p align="justify">
+   Here&rsquo;s what you must do for this laboratory exercise.
+   <b>First,</b> write a method called <tt>linearSearch</tt> that
+   takes an integer called <tt>key</tt> and an integer array called
+   <tt>keys</tt> as its arguments. Your method must use linear search to
+   find <tt>key</tt> in <tt>keys</tt>. It must then return the number
+   of comparisons that were needed to find it.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Second,</b> write a method called
+   <tt>binarySearch</tt> that takes an integer called <tt>key</tt>
+   and a sorted integer array called <tt>keys</tt> as its arguments. Your
+   method must use binary search to find <tt>key</tt> in
+   <tt>keys</tt>. It must then return the number of comparisons that were
+   needed to find it.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unlike the methods discussed in the lectures,
+   your <tt>linearSearch</tt> and <tt>binarySearch</tt> methods must
+   return the number of comparisons they use to find <tt>key</tt> in
+   <tt>keys</tt>. This is not necessarily the same as returning the index
+   of <tt>key</tt> in <tt>keys</tt>! Here are two things to know
+   about counting comparisons.
+  </p>
+  <ul>
+   <li>
+   <p align="justify">
+    Count <i>only</i> comparisons made between <tt>key</tt> and
+    elements of <tt>keys</tt>. Your methods may make other comparisons,
+    but <i>do not</i> count those, because they are not relevant to this
+    experiment.
+   </p>
+   <li>
+   <p align="justify">
+    Count these comparisons whether or not they succeed. It doesn&rsquo;t
+    matter if a comparison is true or false, you must still count it.
+   </p>
+  </ul>
+  <p align="justify">
+   To write these methods, you can copy the linear search and binary search
+   algorithms from the lectures, and then modify them. You can also copy
+   algorithms from the textbook, or from the Internet, or from any other
+   source. You can even write your own algorithms, but this is not recommended
+   for binary search, because it is harder to get right than it looks.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Third,</b> place your methods in the
+   driver class
+   <a href="BinaryVsLinear.java">
+    <tt>BinaryVsLinear</tt>,
+   </a>
+   as shown below. (Source code for this class is available on Canvas.) The
+   driver class&rsquo;s <tt>main</tt> method constructs thirty arrays,
+   each with sorted elements, and computes the average number of comparisons
+   required to find an element in each array.
+  </p>
+  <blockquote>
+   <p>
+    <tt>class&nbsp;BinaryVsLinear&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;static&nbsp;int&nbsp;linearSearch(int&nbsp;key,&nbsp;int&nbsp;[]&nbsp;keys)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&#8942;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;static&nbsp;int&nbsp;binarySearch(int&nbsp;key,&nbsp;int&nbsp;[]&nbsp;keys)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&#8942;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String&nbsp;[]&nbsp;args)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;length&nbsp;=&nbsp;1;&nbsp;length&nbsp;&lt;=&nbsp;30;&nbsp;length&nbsp;+=&nbsp;1)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int[]&nbsp;array&nbsp;=&nbsp;new&nbsp;int[length];&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;index&nbsp;=&nbsp;0;&nbsp;index&nbsp;&lt;&nbsp;length;&nbsp;index&nbsp;+=&nbsp;1)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array[index]&nbsp;=&nbsp;index;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;linearTotal&nbsp;=&nbsp;0.0;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;binaryTotal&nbsp;=&nbsp;0.0;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;element&nbsp;=&nbsp;0;&nbsp;element&nbsp;&lt;&nbsp;length;&nbsp;element&nbsp;+=&nbsp;1)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linearTotal&nbsp;+=&nbsp;linearSearch(element,&nbsp;array);&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;binaryTotal&nbsp;+=&nbsp;binarySearch(element,&nbsp;array);&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;linearAverage&nbsp;=&nbsp;linearTotal&nbsp;/&nbsp;length;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;binaryAverage&nbsp;=&nbsp;binaryTotal&nbsp;/&nbsp;length;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(length&nbsp;+&nbsp;"&nbsp;"&nbsp;+&nbsp;linearAverage&nbsp;+&nbsp;"&nbsp;"&nbsp;+&nbsp;binaryAverage);&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   <b>Fourth,</b> run the class <tt>BinaryVsLinear</tt>. You should
+   obtain a table with three columns of numbers. The first column is an array
+   size (from 1 to 30). The second column is the average number of comparisons
+   required by <tt>linearSearch</tt> to find an element in an array of
+   that size. The third column is the average number of comparisons required by
+   <tt>binarySearch</tt> to find an element in an array of that size.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Fifth,</b> draw a graph using the
+   numbers in the table. You can draw it by hand, or you can use a program,
+   like a spreadsheet. The <i>x</i>-axis of the graph must be the array
+   size. The <i>y</i>-axis must be the average number of comparisons
+   required to find an element in an array of that size. Draw two curves in the
+   graph: one for linear search, and the other for binary search.
+  </p>
+  <p>
+   <b>2. Deliverables.</b>
+  </p>
+  <p align="justify">
+   You must submit all of the following, for a total of 30 possible points.
+  </p>
+  <ol>
+   <li>
+   <p align="justify">
+    Your version of the class <tt>BinaryVsLinear</tt>, containing
+    definitions for the methods <tt>linearSearch</tt> (5 points) and
+    <tt>binarySearch</tt> (5 points).
+   </p>
+   <li>
+   <p align="justify">
+    The output generated by the <tt>main</tt> method of
+    <tt>BinaryVsLinear</tt> (5 points).
+   </p>
+   <li>
+   <p align="justify">
+    A graph of the output (5 points).
+   </p>
+   <li>
+   <p align="justify">
+    A <i>short</i> written answer to this question: Based on your graph,
+    for what array sizes is linear search more efficient than binary search? (5
+    points).
+   </p>
+   <li>
+   <p align="justify">
+    A <i>short</i> written answer to this question: Based on your graph,
+    for what array sizes is binary search more efficient than linear search? (5
+    points).
+   </p>
+  </ol>
+  <p align="justify">
+   If you do not know how to submit your work, then please ask your lab
+   TA&rsquo;s. (It may be more complicated than usual because you are
+   submitting both a file of Java code and a graph.) Your work must be turned
+   in by <b>11:55 <small>PM</small></b> on <b>Wednesday, October
+   30, 2019</b>.
+  </p>
+ </body>
+</html>

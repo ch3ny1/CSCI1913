@@ -1,0 +1,195 @@
+<!-- Created by Bracy 0.4 on Monday, September 30, 2019 at 4:24 PM CDT -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Computer Laboratory 4
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 4</b>
+   <br />
+   <b>CSci 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Development</b>
+   <br />
+   <b>October 1&#8211;2, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   This laboratory assignment is intended as a short introduction to Java for
+   students who are already familiar with C or C++. It asks you to rewrite the
+   Python class <tt>Zillion</tt> from Lab 2 in Java. Like the Python
+   class, the Java class <tt>Zillion</tt> implements a decimal counter.
+   However, since you will be using a Java array instead of a Python list, your
+   counter will have a fixed maximum number of digits.
+  </p>
+  <p>
+   <b>1. Example.</b>
+  </p>
+  <p align="justify">
+   All the code in this example goes inside the <tt>main</tt> method of
+   your driver class. It first creates an instance of <tt>Zillion</tt> in
+   the variable <tt>counter</tt>, like this.
+  </p>
+  <blockquote>
+   <p>
+    <tt>Zillion&nbsp;counter&nbsp;=&nbsp;new&nbsp;Zillion(12);</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   The instance of <tt>Zillion</tt> can hold up to twelve decimal digits.
+   Its initial value is 000000000000. Note that twelve digits can represent a
+   much larger number than will fit in a 32-bit Java <tt>int</tt>, which
+   is only 2&nbsp;147&nbsp;483&nbsp;647, or around two billion. The
+   <tt>main</tt> method then adds 1 to the counter by calling the method
+   <tt>increment</tt>, like this.
+  </p>
+  <blockquote>
+   <p>
+    <tt>counter.increment();</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   Now the counter contains 000000000001. The <tt>main</tt> method now
+   prints the counter like this. Java automatically calls
+   <tt>counter</tt>&rsquo;s <tt>toString</tt> method when you try to
+   print it.
+  </p>
+  <blockquote>
+   <p>
+    <tt>System.out.println(counter);</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   You should see <tt>000000000001</tt> printed. If you call
+   <tt>increment</tt> again, and then print the counter, then you should
+   see <tt>000000000002</tt>. If you call <tt>increment</tt> and
+   print the counter one more time, then you should see
+   <tt>000000000003</tt>, etc.
+  </p>
+  <p>
+   <b>2. Theory.</b>
+  </p>
+  <p align="justify">
+   Your class <tt>Zillion</tt> must represent the digits of a number using
+   a private array of integers (<tt>int</tt>&rsquo;s). Each digit
+   <i>d</i> in the array must be an integer
+   0&nbsp;&#8804;&nbsp;<i>d</i>&nbsp;&#8804;&nbsp;9. For example, suppose
+   that your array is called <tt>digits</tt>, has a length of 3, and
+   represents the number 57. Then <tt>digits[0]</tt> is 0,
+   <tt>digits[1]</tt> is 5, and <tt>digits[2]</tt> is 7.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The method <tt>increment</tt> must work
+   like this. Starting at the right end of the array, and moving toward the
+   left end, it must change 9&rsquo;s into 0&rsquo;s, until it finds a digit
+   that is not 9, or until there are no more digits left to be visited. If it
+   stops because it has visited a digit that is not 9, then it must add 1 to
+   that digit. If it stops because there are no more digits left, then the
+   counter has overflowed and it must not do anything else. For example, if
+   your counter has three digits, and represents the integer 999, then
+   incrementing it must produce 000. It must not indicate an error in any way.
+  </p>
+  <p>
+   <b>3. Implementation.</b>
+  </p>
+  <p align="justify">
+   The class <tt>Zillion</tt> must have all the following methods. To
+   simplify grading, your methods must use the same names as these. However,
+   they need not use the same parameter names.
+  </p>
+  <blockquote>
+   <dl compact="compact">
+    <dt>
+     <p>
+      <tt>public Zillion(int size)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Constructor. Create a private array of <tt>size</tt> integers
+      (<tt>int</tt>&rsquo;s). You may assume that <tt>size</tt> is
+      greater than or equal to 0. You need not initialize the array, because
+      Java initializes all the elements to 0 for you.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public void increment()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Increment the counter, using the algorithm described in part
+      <b>2.</b> One way to do that is by using a <tt>while</tt> loop;
+      there may be other ways. If the counter contains all 9&rsquo;s, then you
+      must not generate an illegal array index.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public String toString()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Convert the digits in the counter to a <tt>String</tt>, and return
+      that <tt>String</tt>. One way to do that is by using a
+      <tt>for</tt> loop that concatenates all the digits of the array
+      together using the operator <tt>+</tt>. Java automatically converts
+      an integer to a string when you concatenate it to a string.
+     </p>
+    </dd>
+   </dl>
+  </blockquote>
+  <p>
+   <b>4. Tests.</b>
+  </p>
+  <p align="justify">
+   The file
+   <a href="Driver.java">
+    <tt>Driver.java</tt>
+   </a>
+   contains Java source code for a driver class, unimaginatively called
+   <tt>Driver</tt>. This class contains a <tt>main</tt> method, which
+   in turn contains code that tests your class <tt>Zillion</tt>. The class
+   <tt>Zillion</tt> must <i>not</i> contain the <tt>main</tt>
+   method! To grade your work, the TA&rsquo;s will run the <tt>main</tt>
+   method in <tt>Driver</tt>. If a test succeeds, then you will receive
+   all the points for that test. If a test fails, then you will receive no
+   points for that test.
+  </p>
+  <p>
+   <b>4. Deliverables.</b>
+  </p>
+  <p align="justify">
+   You must turn in Java source code for your class <tt>Zillion</tt>. Your
+   lab TA will tell you how and where to turn it in. Your work must be
+   submitted by <b>11:55 <small>PM</small></b> on <b>Wednesday,
+   October 9, 2019</b>.
+  </p>
+ </body>
+</html>

@@ -1,0 +1,373 @@
+<!-- Created by Bracy 0.4 on Tuesday, November 26, 2019 at 2:01 PM CST -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Computer Laboratory 12
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 12</b>
+   <br />
+   <b>CS<small>CI</small> 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Development</b>
+   <br />
+   <b>November 26&#8211;27, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   We claim to believe that everyone has equal rank. In other cultures,
+   however, some people are thought to have higher rank than others. For
+   example, the following system of ranks is similar to that used in Nineteenth
+   Century Victorian England&#8212;and in some modern fantasy and romance
+   novels.
+  </p>
+  <table align="center" border="1" cellpadding="3" cellspacing="0">
+   <tr bgcolor="#D3D3D3" valign="top">
+    <td>
+     <p align="center">
+      <b>&nbsp;&nbsp;R<small>ANK</small>&nbsp;&nbsp;</b>
+     </p>
+    </td>
+    <td>
+     <p align="center">
+      <b>D<small>ESCRIPTION</small></b>
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      0
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;King, Queen
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      1
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Prince, Princess
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      2
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Duke, Duchess
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      3
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Marquess, Marchioness
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      4
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Count, Countess
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      5
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Knight, Dame
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      6
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Gentleman, Gentlewoman&nbsp;&nbsp;
+     </p>
+    </td>
+   </tr>
+   <tr valign="top">
+    <td>
+     <p align="center">
+      7
+     </p>
+    </td>
+    <td>
+     <p>
+      &nbsp;&nbsp;Commoner
+     </p>
+    </td>
+   </tr>
+  </table>
+  <p align="justify">
+   We can denote each rank by a nonnegative integer, with lower integers
+   corresponding to higher ranks. For example, a King has higher rank that a
+   Prince, because 0&nbsp;&lt;&nbsp;1. Similarly, a Prince has higher rank than
+   a Count, because 1&nbsp;&lt;&nbsp;4. And everyone has higher rank than a
+   Commoner, except another Commoner.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In the lectures, we used a queue to model a
+   line of people waiting to enter a movie theater. As people arrived at the
+   theater, they joined the queue at the rear, and left the queue at the front.
+   This makes sense where people don&rsquo;t have ranks. If there are ranks,
+   however, then things work differently: people arriving at the theater enter
+   in order of rank. For example, if a Commoner and a Prince arrive at the
+   theater, then the Prince would enter first. And if a King arrives, he would
+   enter before either of them. Commoners would enter last of all.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can model the situation just described by
+   using a different data structure from an ordinary queue, called a
+   <i>priority queue.</i> In a priority queue, objects (perhaps
+   representing people) arrive at the rear in the usual way. However, instead
+   of leaving at the front, they leave in order of their ranks. Objects with
+   higher ranks (and lower numbers) leave before objects with lower ranks (and
+   higher numbers).
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Priority queues have other uses besides
+   enforcing antiquated dominance hierarchies. For example, a computer
+   operating system might work by sharing the central processor among many
+   different programs. If some programs are more important than others, then
+   the operating system might use a priority queue to decide which program will
+   run first.
+  </p>
+  <p>
+   <b>1. Theory.</b>
+  </p>
+  <p align="justify">
+   We can implement something like a priority queue using a binary search tree
+   (<small>BST</small>) that associates a set of <i>keys</i> with a
+   set of <i>values.</i> The <small>BST</small>&rsquo;s values are
+   objects. Its keys are nonnegative integers that denote the ranks of those
+   objects. Unlike the <small>BST</small>&rsquo;s discussed in the
+   lectures, the nodes in each left subtree have ranks <i>less than or
+   equal</i> to the rank at the root. The nodes in each right subtree have
+   ranks <i>greater than</i> the rank at the root. This allows two or more
+   nodes to have the same rank.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When we enqueue a new object, we use the
+   <small>BST</small> addition algorithm discussed in class. If there are
+   <i>n</i> nodes in the tree, then the enqueueing algorithm can work in
+   <i>O</i>(log&nbsp;<i>n</i>) time, assuming that the objects are
+   added in random order of their ranks.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; When we dequeue an object, we first find a
+   node with the minimum key, again using an algorithm discussed in class. We
+   then delete this node from the tree. This is easy to do, because it will
+   always have at least one empty child, so we don&rsquo;t need a complex
+   deletion algorithm that can delete any node. We finally return the object at
+   the removed node. The dequeueing algorithm can also work in
+   <i>O</i>(log&nbsp;<i>n</i>) time.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The <small>BST</small> used to implement
+   the priority queue must have a head node, to eliminate special cases when
+   enqueueing and dequeueing. It should also use <tt>above</tt> and
+   <tt>below</tt> pointers. B<small>ST</small>&rsquo;s with head
+   nodes were discussed in the lectures, and code that uses them is available
+   on Canvas&#8212;but it is not the same as what you will write here.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; By the way, what we&rsquo;ve just described
+   isn&rsquo;t really a priority queue! This is because objects of equal rank
+   aren&rsquo;t always deleted in the order they are added. To keep the
+   assignment simple, we&rsquo;ll ignore that problem: we don&rsquo;t care
+   about the order in which objects with equal rank are deleted. All we care
+   about is that no object with low rank (like a Commoner) is deleted before an
+   object of high rank (like a King).
+  </p>
+  <p>
+   <b>2. Implementation.</b>
+  </p>
+  <p align="justify">
+   Write a class called <tt>PriorityQueue</tt> that implements a priority
+   queue using a <small>BST</small>. The priority queue must be able to
+   hold arbitrary ranked objects of type <tt>Base</tt>, so it looks like
+   this.
+  </p>
+  <blockquote>
+   <p>
+    <tt>class&nbsp;PriorityQueue&lt;Base&gt;&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;class&nbsp;Node&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Base&nbsp;object;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;int&nbsp;&nbsp;rank;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Node&nbsp;left;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Node&nbsp;right;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Node(Base&nbsp;object,&nbsp;int&nbsp;rank)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.object&nbsp;=&nbsp;object;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.rank&nbsp;=&nbsp;rank;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;left&nbsp;=&nbsp;null;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;right&nbsp;=&nbsp;null;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;Node&nbsp;root;&nbsp;&nbsp;//&nbsp;&nbsp;Root&nbsp;node&nbsp;of&nbsp;the&nbsp;BST.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&#8942;&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   The class <tt>PriorityQueue</tt> must have at least the following
+   methods. You may need to write others.
+  </p>
+  <blockquote>
+   <dl compact="compact">
+    <dt>
+     <p>
+      <tt>public PriorityQueue</tt>()
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Constructor. Make a new, empty priority queue. You must set
+      <tt>root</tt> to a head node, to simplify insertion and deletion by
+      the other methods. You must decide what the <tt>rank</tt> slot of
+      the head node should be. Whatever you choose, it should minimize the
+      number of special cases needed by the other methods. Don&rsquo;t use
+      special cases to add the first node, or to delete the last node!
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public Base dequeue()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      If the priority queue is empty, then throw an
+      <tt>IllegalStateException</tt>. Otherwise, remove the highest ranked
+      object (with the lowest <tt>rank</tt> number) from the priority
+      queue, using the algorithm described in the previous section. Resolve
+      ties in rank arbitrarily. Return the removed object.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public void enqueue(Base object, int rank)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      If <tt>rank</tt> is negative, then throw an
+      <tt>IllegalArgumentException</tt>. Otherwise, add
+      <tt>object</tt> to the priority queue with the given
+      <tt>rank</tt>, using the algorithm described in the previous
+      section.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public boolean isEmpty()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Return <tt>true</tt> if the priority queue is empty. Return
+      <tt>false</tt> otherwise.
+     </p>
+    </dd>
+   </dl>
+  </blockquote>
+  <p>
+   <b>3. Deliverables.</b>
+  </p>
+  <p align="justify">
+   The file
+   <a href="tests12.java">
+    <tt>tests12.java</tt>
+   </a>
+   on Canvas contains Java source code that performs a series of tests. The
+   tests call methods from the <tt>PriorityQueue</tt> class. Some of them
+   print what those methods return. Each test is followed by a comment that
+   tells how many points it is worth, and what must be printed if it works
+   correctly. Turn in your code and the results of the tests in the usual way.
+   If you do not know how or where to turn in your work, then please ask your
+   lab TA.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your work must be submitted by <b>11:55
+   <small>PM</small></b> on <b>Friday, December 6, 2019.</b> This
+   due date gives you a little extra time because of the power failure on
+   November 25, and also because of the Thanksgiving holiday.
+  </p>
+ </body>
+</html>

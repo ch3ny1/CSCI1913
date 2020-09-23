@@ -1,0 +1,321 @@
+<!-- Created by Bracy 0.4 on Monday, October 14, 2019 at 4:59 PM CDT -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Computer Lab Assignment 6
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 6</b>
+   <br />
+   <b>CS<small>CI</small> 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Design</b>
+   <br />
+   <b>October 15&#8211;16, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   In this lab assignment, you will extend some simple Java classes that
+   represent plane figures from elementary geometry. The object of this
+   assignment is not to do anything useful, but rather to demonstrate how
+   methods can be inherited by extending classes.
+  </p>
+  <p>
+   <b>1. Theory.</b>
+  </p>
+  <p align="justify">
+   A <i>polygon</i> is a closed plane figure with three or more sides, all
+   of which are line segments. The <i>perimeter</i> of a polygon is the
+   sum of the lengths of its sides. A <i>rectangle</i> is a polygon with
+   exactly four sides that meet at 90&#176; angles. Like a polygon, it has a
+   perimeter. It also has an <i>area,</i> the product of its base and
+   height. A <i>square</i> is a rectangle whose sides are all the same
+   length. Like a rectangle, it has a perimeter and an area.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Polygons, rectangles, and squares make up an
+   <i>is-a hierarchy.</i> The hierarchy gets its name because a square
+   <i>is-a</i> rectangle, and a rectangle <i>is-a</i> polygon. Is-a
+   hierarchies can be easily modeled by Java classes using the
+   <tt>extends</tt> keyword.
+  </p>
+  <p>
+   <b>2. Implementation.</b>
+  </p>
+  <p align="justify">
+   The following is the source code for a Java class whose instances represent
+   polygons. The file
+   <a href="Polygon.java">
+    <tt>Polygon.java</tt>
+   </a>
+   on Canvas contains a copy of this source code. You will need it to complete
+   the laboratory assignment.
+  </p>
+  <blockquote>
+   <p>
+    <tt>class&nbsp;Polygon&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;int[]&nbsp;sideLengths;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;public&nbsp;Polygon(int&nbsp;sides,&nbsp;int&nbsp;...&nbsp;lengths)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;index&nbsp;=&nbsp;0;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;sideLengths&nbsp;=&nbsp;new&nbsp;int[sides];&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;length:&nbsp;lengths)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sideLengths[index]&nbsp;=&nbsp;length;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index&nbsp;+=&nbsp;1;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;public&nbsp;int&nbsp;side(int&nbsp;number)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;sideLengths[number];&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;public&nbsp;int&nbsp;perimeter()&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;total&nbsp;=&nbsp;0;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;index&nbsp;=&nbsp;0;&nbsp;index&nbsp;&lt;&nbsp;sideLengths.length;&nbsp;index&nbsp;+=&nbsp;1)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;total&nbsp;+=&nbsp;side(index);&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;total;&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   The class <tt>Polygon</tt> uses a private array called
+   <tt>sideLengths</tt> to store the lengths of a polygon&rsquo;s sides.
+   The array&rsquo;s length, <tt>sideLengths.length</tt>, is the number of
+   sides that the polygon has. The class <tt>Polygon</tt> also has a has a
+   public constructor and two public methods. To keep things simple, they do
+   not check their arguments for correctness, as they would if
+   <tt>Polygon</tt> was part of a real program.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The constructor takes four or more arguments
+   and returns an instance of <tt>Polygon</tt> that represents a polygon.
+   The first argument is the number of sides that the polygon has. The
+   remaining arguments are the lengths of those sides. For example, the Java
+   statement:
+  </p>
+  <blockquote>
+   <p>
+    <tt>Polygon triangle = new Polygon(3, 3, 4, 5);</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   declares the variable <tt>triangle</tt> and sets it to an instance of
+   <tt>Polygon</tt> that represents a triangle (because the first argument
+   says it has 3 sides). The lengths of the triangle&rsquo;s sides are 3, 4,
+   and 5.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The three dots
+   &lsquo;<tt>...</tt>&rsquo; in the constructor mean that it can take
+   zero or more extra integer arguments after its first argument. The
+   <tt>for</tt>-loop with the colon visits the extra arguments one at a
+   time. Don&rsquo;t worry if those parts of Java are unfamiliar. You
+   don&rsquo;t have to know how the constructor works, only how to call it.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The method <tt>side</tt> returns the
+   length of a polygon&rsquo;s side. Sides are numbered starting from 0. For
+   example, the expression <tt>triangle.side(0)</tt> returns 3, the
+   expression <tt>triangle.side(1)</tt> returns 4, and the expression
+   <tt>triangle.side(2)</tt> returns 5.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The method <tt>perimeter</tt> returns a
+   polygon&rsquo;s perimeter, the sum of the lengths of its sides. For example,
+   the expression <tt>triangle.perimeter()</tt> returns
+   3&nbsp;+&nbsp;4&nbsp;+&nbsp;5&nbsp;= 12.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For this assignment, you must write a class
+   called <tt>Rectangle</tt>. As its name suggests, each instance of
+   <tt>Rectangle</tt> must represent a rectangle. Along with a
+   constructor, <tt>Rectangle</tt> must provide two methods, called
+   <tt>area</tt> and <tt>perimeter</tt>. The method
+   <tt>area</tt> must return the integer area of the rectangle, and the
+   method <tt>perimeter</tt> must return the integer perimeter of the
+   rectangle.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must also write another class, called
+   <tt>Square</tt>. As its name suggests, each instance of
+   <tt>Square</tt> must represent a square. Along with a constructor,
+   <tt>Square</tt> must provide two methods, called <tt>area</tt> and
+   <tt>perimeter</tt>. The method <tt>area</tt> must return the
+   integer area of the square, and the method <tt>perimeter</tt> must
+   return the integer perimeter of the square.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The following driver program shows examples
+   of how the constructors and methods of <tt>Rectangle</tt> and
+   <tt>Square</tt> must work.
+  </p>
+  <blockquote>
+   <p>
+    <tt>class&nbsp;Shapes&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;Rectangle&nbsp;wreck&nbsp;=&nbsp;new&nbsp;Rectangle(3,&nbsp;5);&nbsp;&nbsp;//&nbsp;&nbsp;Make&nbsp;a&nbsp;3&nbsp;&#215;&nbsp;5&nbsp;rectangle.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(wreck.area());&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;Print&nbsp;its&nbsp;area,&nbsp;15.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(wreck.perimeter());&nbsp;&nbsp;//&nbsp;&nbsp;Print&nbsp;its&nbsp;perimeter,&nbsp;16.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;Square&nbsp;nerd&nbsp;=&nbsp;new&nbsp;Square(7);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;Make&nbsp;a&nbsp;7&nbsp;&#215;&nbsp;7&nbsp;square.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(nerd.area());&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;Print&nbsp;its&nbsp;area,&nbsp;49.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(nerd.perimeter()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;Print&nbsp;its&nbsp;perimeter,&nbsp;28.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   Your classes <tt>Rectangle</tt> and <tt>Square</tt> must use the
+   <tt>extends</tt> keyword, so they will inherit methods from other
+   classes. Also, each class must inherit as many of its methods as possible
+   from those other classes. <b>Y<small>OU WILL LOSE POINTS FOR DEFINING A
+   METHOD INSIDE A CLASS</small>, <small>IF IT COULD HAVE BEEN INHERITED
+   FROM ANOTHER CLASS</small>!</b>
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Here&rsquo;s a hint about how to write the
+   constructors for <tt>Rectangle</tt> and <tt>Square</tt>. Suppose
+   that a class <tt>Triangle</tt> extends the class <tt>Polygon</tt>.
+   Then <tt>Polygon</tt> is the <i>superclass</i> of
+   <tt>Triangle</tt>. The keyword <tt>super</tt> can be used to call
+   the constructor that belongs to a superclass. For example,
+   <tt>Triangle</tt>&rsquo;s constructor, which takes the lengths of a
+   triangle&rsquo;s three sides, might look like this.
+  </p>
+  <blockquote>
+   <p>
+    <tt>public&nbsp;Triangle(int&nbsp;a,&nbsp;int&nbsp;b,&nbsp;int&nbsp;c)&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;super(3,&nbsp;a,&nbsp;b,&nbsp;c);&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   It uses <tt>Polygon</tt>&rsquo;s constructor to make a polygon with 3
+   sides, whose lengths are <tt>a</tt>, <tt>b</tt>, and
+   <tt>c</tt>. If <tt>super</tt> is used in this way, then it must be
+   the first statement in the constructor. You don&rsquo;t have to write
+   <tt>Triangle</tt>&#8212;this was only an example!
+  </p>
+  <p>
+   <b>3. Deliverables.</b>
+  </p>
+  <p align="justify">
+   The file
+   <a href="tests6.java">
+    <tt>tests6.java</tt>
+   </a>
+   contains a driver class whose a <tt>main</tt> method performs 12
+   <i>public tests,</i> worth 1 point each. Each public test is a call to
+   <tt>println</tt>, along with a comment that shows what it must print.
+   To grade your work, the TA&rsquo;s will run the public tests using your
+   <tt>Rectangle</tt> and <tt>Square</tt> classes. If a public test
+   behaves exactly as it should, then you will receive 1 point for it.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In addition, the TA&rsquo;s will do 5
+   <i>private tests</i> on your <tt>Rectangle</tt> and
+   <tt>Square</tt> classes. You will not be told what the private tests
+   are, but they are worth 2 points each, and they determine if
+   <tt>Rectangle</tt> and <tt>Square</tt> have inherited as many
+   methods as possible. The TA&rsquo;s will do the same private tests for all
+   students, and these tests will be made public only after all the work for
+   this lab has been graded.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your score for this lab is the sum of the
+   points you get for the public tests, and the points you get for the private
+   tests, for a maximum of 22 points. Here is what you must turn in.
+  </p>
+  <ol>
+   <li>
+   <p align="justify">
+    Source code for the class <tt>Rectangle</tt>. Its instances must
+    provide the methods <tt>side</tt>, <tt>area</tt> and
+    <tt>perimeter</tt>. These methods are not necessarily defined in
+    <tt>Rectangle</tt>: some or all may be inherited.
+   </p>
+   <li>
+   <p align="justify">
+    Source code for the class <tt>Square</tt>. Its instances must provide
+    the methods <tt>side</tt>, <tt>area</tt> and
+    <tt>perimeter</tt>. These methods are not necessarily defined in
+    <tt>Square</tt>: some or all may be inherited.
+   </p>
+  </ol>
+  <p align="justify">
+   Submit source code for both classes in one file. Your work must be submitted
+   by <b>11:55 <small>PM</small></b> on <b>Wednesday, October 23,
+   2019</b>. If you do not know how to submit your work, then please ask
+   your lab TA.
+  </p>
+ </body>
+</html>

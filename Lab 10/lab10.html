@@ -1,0 +1,271 @@
+<!-- Created by Bracy 0.4 on Monday, November 11, 2019 at 4:59 PM CST -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Computer Laboratory 10
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 10</b>
+   <br />
+   <b>CS<small>CI</small> 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Development</b>
+   <br />
+   <b>November 12&#8211;13, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   This assignment involves implementing a data structure called an
+   <i>association list,</i> a term borrowed from the programming language
+   <i>Lisp.</i> It acts something like a Python dictionary, because it
+   associates keys with their corresponding values. However, it uses a linear
+   singly-linked list internally, so it is slower than a dictionary.
+  </p>
+  <p>
+   <b>1. Theory.</b>
+  </p>
+  <p align="justify">
+   An <i>association list</i> is a linear, singly-linked list of nodes.
+   Each node in an association list has three slots, called <tt>key</tt>,
+   <tt>value</tt>, and <tt>next</tt>. The <tt>key</tt> and
+   <tt>value</tt> slots point to objects of specific types. The
+   <tt>next</tt> slot points to the next node in the list (or to
+   <tt>null</tt>). The node associates its <tt>key</tt> object with
+   its <tt>value</tt> object. Association lists have the following
+   operations, all of which involve traversing lists to search for nodes with
+   given <tt>key</tt> objects.
+  </p>
+  <ul>
+   <li>
+   <p align="justify">
+    You can get the <tt>value</tt> object from a node. It&rsquo;s the
+    object that is associated with the node&rsquo;s <tt>key</tt> object.
+   </p>
+   <li>
+   <p align="justify">
+    You can change the <tt>value</tt> object in a node. After that, the
+    <tt>key</tt> object is associated with a different <tt>value</tt>
+    object.
+   </p>
+   <li>
+   <p align="justify">
+    You can delete the node that contains a <tt>key</tt>. After that, the
+    <tt>key</tt> object is not associated with a <tt>value</tt>
+    object.
+   </p>
+   <li>
+   <p align="justify">
+    If you cannot find a node, then you can add a new one that contains a
+    <tt>key</tt> object and a <tt>value</tt> object. After that, the
+    <tt>key</tt> object is associated with the <tt>value</tt> object.
+   </p>
+  </ul>
+  <p align="justify">
+   As a result of these operations, you can use an association list something
+   like a dictionary. For example, the <tt>key</tt> objects might be
+   <tt>String</tt>&rsquo;s that are English words for numbers. The
+   <tt>value</tt> objects might be <tt>Integer</tt>&rsquo;s that
+   correspond to those words. If you give the association list an English word,
+   then you can get back its corresponding number.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Association lists work by doing linear
+   search. As a result, if an association list has <i>n</i> keys, then
+   each of the operations described above will require
+   <i>O</i>(<i>n</i>) comparisons. Later in this course, we&rsquo;ll
+   discuss more efficient alternatives to association lists. These will need
+   only <i>O</i>(log&nbsp;<i>n</i>) or even <i>O</i>(1)
+   comparisons.
+  </p>
+  <p>
+   <b>2. Implementation.</b>
+  </p>
+  <p align="justify">
+   You must write a Java class called <tt>AssociationList</tt> that
+   implements an association list. To simplify grading, your class must use the
+   same names for things that are used here. It must have two class parameters,
+   called <tt>Key</tt> and <tt>Value</tt>, so it looks like this.
+  </p>
+  <blockquote>
+   <p>
+    <tt>class&nbsp;AssociationList&lt;Key,&nbsp;Value&gt;&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&#8942;&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   Here <tt>Key</tt> is the type of the association list&rsquo;s
+   <tt>key</tt> objects, and <tt>Value</tt> is the type of the
+   association list&rsquo;s <tt>value</tt> objects.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Within the class
+   <tt>AssociationList</tt>, you must have a <tt>private</tt> class
+   called <tt>Node</tt>. The class <tt>Node</tt> must have three
+   <tt>private</tt> slots: a slot called <tt>key</tt> whose type is
+   <tt>Key</tt>, a slot called <tt>value</tt> whose type is
+   <tt>Value</tt>, and a slot called <tt>next</tt> whose type is
+   <tt>Node</tt>. It must have a constructor that initializes these three
+   slots from its arguments.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Don&rsquo;t try to use the node classes from
+   the lectures, or from other lab assignments. They have the wrong number of
+   slots, and the wrong types of slots. Also, <i>you are not allowed to use
+   arrays in any way.</i> If you implement <tt>AssociationList</tt>
+   using one or more arrays, then you will receive zero points for this lab.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your <tt>AssociationList</tt> class must
+   also have a <tt>private</tt> variable called <tt>head</tt>. It
+   must point to the head <tt>Node</tt> in a linear singly-linked list of
+   <tt>Node</tt>&rsquo;s. The head node is a dummy node that is always at
+   the front of a linked list; it helps eliminate special cases when deleting
+   nodes. Along with <tt>Node</tt> and <tt>head</tt>, your class must
+   have these methods. All of them (except for <tt>isEqual</tt>) work with
+   <tt>head</tt> somehow.
+  </p>
+  <blockquote>
+   <dl compact="compact">
+    <dt>
+     <p>
+      <tt>public AssociationList()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Constructor. Initialize an empty instance of
+      <tt>AssociationList</tt>. Hint: make the <tt>head</tt> node
+      here.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public void delete(Key key)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Search the association list for a <tt>Node</tt> whose
+      <tt>key</tt> slot equals the <tt>key</tt> parameter, according
+      to <tt>isEqual</tt>. Delete that <tt>Node</tt> from the list.
+      If no <tt>Node</tt> has a <tt>key</tt> slot that equals the
+      <tt>key</tt> parameter, then do nothing. Your <tt>delete</tt>
+      method must not use a special case to delete the first <tt>Node</tt>
+      in the list after <tt>head</tt>. Hint: use the
+      &lsquo;&lsquo;left-right trick&rsquo;&rsquo; discussed in the lectures.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public Value get(Key key)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Search the association list for a <tt>Node</tt> whose
+      <tt>key</tt> slot equals the <tt>key</tt> parameter, according
+      to <tt>isEqual</tt>. Return the <tt>value</tt> slot of that
+      <tt>Node</tt>. If no <tt>Node</tt> has a <tt>key</tt> slot
+      that equals the <tt>key</tt> parameter, then throw an
+      <tt>IllegalArgumentException</tt>. Hints: skip the
+      <tt>head</tt> node. You don&rsquo;t need the
+      &lsquo;&lsquo;left-right trick&rsquo;&rsquo; here.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>private boolean isEqual(Key leftKey, Key rightKey)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Test if <tt>leftKey</tt> is equal to <tt>rightKey</tt>. Either
+      or both may be <tt>null</tt>. This method is necessary because you
+      must use <tt>==</tt> when <tt>leftKey</tt> or
+      <tt>rightKey</tt> are <tt>null</tt>, but you must use the
+      <tt>equals</tt> method when both are not <tt>null</tt>. (Recall
+      that <tt>null</tt> has no methods.)
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public boolean isIn(Key key)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Search the association list for a <tt>Node</tt> whose
+      <tt>key</tt> slot equals the <tt>key</tt> parameter according
+      to <tt>isEqual</tt>. Return <tt>true</tt> if you find such a
+      <tt>Node</tt>, and return <tt>false</tt> otherwise. Hints: skip
+      the <tt>head</tt> node. You don&rsquo;t need the
+      &lsquo;&lsquo;left-right trick&rsquo;&rsquo; here.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public void put(Key key, Value value)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Search the association list for a <tt>Node</tt> whose
+      <tt>key</tt> slot equals the <tt>key</tt> parameter, according
+      to <tt>isEqual</tt>. Change the <tt>value</tt> slot of that
+      <tt>Node</tt> to be the <tt>value</tt> parameter. If there is
+      no such <tt>Node</tt>, then add a new <tt>Node</tt> immediately
+      after the <tt>head</tt> node. The new <tt>Node</tt>&rsquo;s
+      <tt>key</tt> slot is the <tt>key</tt> parameter, and its
+      <tt>value</tt> slot is the <tt>value</tt> parameter. Hint: you
+      don&rsquo;t need the &lsquo;&lsquo;left-right trick&rsquo;&rsquo; here.
+     </p>
+    </dd>
+   </dl>
+  </blockquote>
+  <p align="justify">
+   The file
+   <a href="tests10.java">
+    <tt>tests10.java</tt>
+   </a>
+   on Canvas contains Java code that performs a series of tests. Each test
+   calls a method from your class <tt>AssociationList</tt>, and prints
+   what the method returns. Each test is also followed by a comment that tells
+   how many points it is worth, and what must be printed if it works correctly.
+  </p>
+  <p>
+   <b>3. Deliverables.</b>
+  </p>
+  <p align="justify">
+   Run the tests, then turn in the Java source code for your class
+   <tt>AssociationList</tt>. If you do not know how or where to turn it
+   in, then ask your lab TA. Your work must be submitted by <b>11:55
+   <small>PM</small></b> on <b>Wednesday, November 20, 2019.</b>
+  </p>
+ </body>
+</html>

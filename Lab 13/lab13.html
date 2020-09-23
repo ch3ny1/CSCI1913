@@ -1,0 +1,538 @@
+<!-- Created by Bracy 0.4 on Monday, December 2, 2019 at 4:35 PM CST -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Computer Laboratory 13
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 13</b>
+   <br />
+   <b>CS<small>CI</small> 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Development</b>
+   <br />
+   <b>December 3&#8211;4, 2019</b>
+   <br />
+   <br />
+   <i>This is the final laboratory assignment for CS<small>CI</small>
+   1913 this semester!</i>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   This laboratory assignment involves designing a perfect hash function for a
+   small set of strings. It demonstrates that a perfect hash function need not
+   be hard to design, or hard to understand.
+  </p>
+  <p>
+   <b>1. Theory.</b>
+  </p>
+  <p align="justify">
+   We&rsquo;ll start by reviewing some terminology from the lectures. A
+   <i>hash function</i> is a function that takes a <i>key</i> as its
+   argument, and returns an index into an array. The array is called a
+   <i>hash table.</i> The object that appears at the index in that array
+   is the key&rsquo;s <i>value.</i> The key&rsquo;s value is somehow
+   associated with the key.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A hash function may return the same index for
+   two different keys. This is called a <i>collision.</i> Collisions are
+   undesirable if we want distinct values to be associated with distinct keys.
+   A hash function that has no collisions for a set of keys is said to be
+   <i>perfect</i> for that set. Note that a hash function may be perfect
+   for some sets of keys, but not perfect for others.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Most modern programming languages use a small
+   set of <i>reserved names</i> as operators, punctuation, and syntactic
+   markers. (They&rsquo;re also called <i>reserved words</i> or
+   <i>keywords.</i>) For example, Java currently uses reserved names like
+   <tt>if</tt>, <tt>private</tt>, <tt>while</tt>, etc.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A compiler for a programming language must be
+   able to test if a name in a program is reserved. Programs may be hundreds or
+   thousands of pages long, and may contain thousands or even millions of
+   names. As a result, the test must be done efficiently. It might be
+   implemented using a hash table and a perfect hash function.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Here&rsquo;s how the test may work. Suppose
+   that the hash table <i>T</i> is an array of strings. Each time the
+   compiler reads a name <i>N</i>, it calls a perfect hash function
+   <i>h</i> to compute an index <i>h</i>(<i>N</i>). If
+   <i>h</i>(<i>N</i>) is a legal index for <i>T,</i> and
+   <i>T</i>[<i>h</i>(<i>N</i>)]&nbsp;=&nbsp;<i>N</i>, then
+   the name is reserved, otherwise it is not. Unused elements of <i>T</i>
+   might be empty strings <tt>""</tt>. If we measure the efficiency of a
+   test by the number of string comparisons it performs, then the test requires
+   only <i>O</i>(1) comparisons. Of course this works only if
+   <i>h</i> is perfect for the set of reserved names.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Now suppose there is a very simple
+   programming language that uses the following set of twelve reserved names.
+  </p>
+  <blockquote>
+   <table cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <p>
+       <tt>and</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>else&nbsp;&nbsp;&nbsp;&nbsp;</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>or</tt>
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <tt>begin</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>end</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>return</tt>
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <tt>define&nbsp;&nbsp;</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>if</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>then</tt>
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <tt>do</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>not</tt>
+      </p>
+     </td>
+     <td>
+      <p>
+       <tt>while</tt>
+      </p>
+     </td>
+    </tr>
+   </table>
+  </blockquote>
+  <p align="justify">
+   We might define a perfect hash function for the reserved names in the
+   following way. We get one or more characters from each name. Then we convert
+   each character to an integer. This is easy, because characters are already
+   represented as small nonnegative integers. For example, in the
+   A<small>SCII</small> and Unicode character sets, the characters
+   '<tt>a</tt>' through '<tt>z</tt>' are represented as the
+   integers 97 through 122, without gaps. Finally, we do some arithmetic on the
+   integers to obtain an index into the hash table. We choose the characters,
+   and the arithmetic operations, so that no two reserved names result in the
+   same index.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For example, if we define the hash function
+   <i>h</i> so that it adds the first and second characters of each name,
+   we get the following indexes.
+  </p>
+  <blockquote>
+   <table cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>and</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       207
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>begin</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       199
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>define</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       201
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>do</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       211
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>else</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       209
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>end</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       211
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>if</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       207
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>not</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       221
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>or</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       225
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>return</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       215
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>then</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       220
+      </p>
+     </td>
+    </tr>
+    <tr valign="top">
+     <td>
+      <p>
+       <i>h</i>("<tt>while</tt>")
+      </p>
+     </td>
+     <td>
+      <p align="center">
+       &nbsp;&nbsp;=&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       223
+      </p>
+     </td>
+    </tr>
+   </table>
+  </blockquote>
+  <p align="justify">
+   This definition for <i>h</i> does not result in a perfect hash
+   function, because it has collisions. For example, the strings
+   "<tt>and</tt>" and "<tt>if</tt>" result in the index 207.
+   Similarly, the strings "<tt>do</tt>" and "<tt>end</tt>" result in
+   the index 211. We either didn&rsquo;t choose the right characters from each
+   string, or the right operations to perform on those characters, or both.
+   Unfortunately, there is no good theory about how to define <i>h</i>.
+   The best we can do is try various definitions, by trial and error, until we
+   find one that is perfect.
+  </p>
+  <p>
+   <b>2. Implementation.</b>
+  </p>
+  <p align="justify">
+   Design a perfect hash function for the reserved names shown in the previous
+   section. To do that, write a small test class, something like this, and run
+   it with various definitions for the function <tt>hash</tt>. It calls
+   <tt>hash</tt> for each reserved name, and writes indexes to standard
+   output.
+  </p>
+  <blockquote>
+   <p>
+    <tt>class&nbsp;Test&nbsp;</tt>
+    <br />
+    <tt>{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;static&nbsp;final&nbsp;String&nbsp;[]&nbsp;reserved&nbsp;=&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;{&nbsp;"and",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"begin",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"define",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"do",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"else",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"end",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"if",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"not",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"or",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"return",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"then",&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"while"&nbsp;};&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;private&nbsp;static&nbsp;int&nbsp;hash(String&nbsp;name)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;&nbsp;Your&nbsp;code&nbsp;goes&nbsp;here.&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String&nbsp;[]&nbsp;args)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(int&nbsp;index&nbsp;=&nbsp;0;&nbsp;index&nbsp;&lt;&nbsp;reserved.length&nbsp;;&nbsp;index&nbsp;+=&nbsp;1)&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.print("h(\""&nbsp;+&nbsp;reserved[index]&nbsp;+&nbsp;"\")&nbsp;=&nbsp;");&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.print(hash(reserved[index]));&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println();&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>&nbsp;&nbsp;}&nbsp;</tt>
+    <br />
+    <tt>}</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   When defining <tt>hash</tt>, you might try adding characters at
+   specific indexes from each <tt>name</tt>. You might try linear
+   combinations of the characters: that is, multiplying the characters by small
+   constants, then adding or subtracting the results. You might try the
+   operator <tt>%</tt>. You might also try a mixture of these. Whatever
+   you try, reject any definition of <tt>hash</tt> that is not perfect:
+   one that returns the same index for two different names.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your method <tt>hash</tt> must work in
+   constant time, without loops or recursions. It must not use
+   <tt>if</tt>&rsquo;s or <tt>switch</tt>&rsquo;es. It must not call
+   the Java method <tt>hashCode</tt>, because that uses a loop, and so
+   does not work in <i>O</i>(1) time. It must not return negative
+   integers, because they can&rsquo;t be array indexes.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The character at index <i>k</i> in
+   <tt>name</tt> is obtained by
+   <tt>name.charAt(</tt><i>k</i><tt>)</tt>. Characters in Java
+   <tt>String</tt>s are indexed starting from 0, and ending with the
+   length of the string minus 1. For example, the first character from
+   <tt>name</tt> is returned by <tt>name.charAt(0)</tt>, the second
+   character by <tt>name.charAt(1)</tt>, and the last character by
+   <tt>name.charAt(name.length()</tt>&nbsp;<tt>-</tt>&nbsp;<tt>1)</tt>.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Don&rsquo;t worry if there are gaps between
+   the indexes: your <tt>hash</tt> function need not be
+   <i>minimal.</i> Also, try to keep the returned indexes small: they
+   shouldn&rsquo;t exceed 2000. For example, I know a perfect hash function for
+   the reserved words in this assignment, whose indexes range from 1177 to
+   1413. I found it after about ten minutes of trial-and-error search.
+  </p>
+  <p>
+   <b>3. Deliverables.</b>
+  </p>
+  <p align="justify">
+   You must turn in the following, for 20 possible points.
+  </p>
+  <ol>
+   <li>
+   <p align="justify">
+    The class <tt>Test</tt> (10 points). For full credit, it must define
+    <tt>hash</tt> as a perfect hash function for all twelve reserved
+    words.
+   </p>
+   <li>
+   <p align="justify">
+    Output produced by the class <tt>Test</tt> (10 points). For full
+    credit, it must show that <tt>hash</tt> returns distinct indexes when
+    called on the twelve reserved words.
+   </p>
+  </ol>
+  <p align="justify">
+   This laboratory assignment is due at <b>11:55
+   <small>PM</small></b> on <b>Tuesday, December 10, 2019</b> (not
+   Wednesday like the others have been!). However, you can probably finish it
+   and turn it in during the lab. Your TA will tell you how and where to submit
+   it.
+  </p>
+ </body>
+</html>

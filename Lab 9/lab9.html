@@ -1,0 +1,230 @@
+<!-- Created by Bracy 0.4 on Monday, November 4, 2019 at 5:11 PM CST -->
+<html>
+ <head>
+  <title>
+   CSci 1913 Programming Laboratory 9
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Programming Laboratory 9</b>
+   <br />
+   <b>CS<small>CI</small> 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Development</b>
+   <br />
+   <b>November 5&#8211;6, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   Two queue classes were discussed in the lectures. One implemented a queue
+   using a linear linked list of nodes. The other implemented a queue using a
+   circular array. For this lab assignment, you must implement an iterator for
+   the queue class that uses a circular array.
+  </p>
+  <p>
+   <b>1. Theory.</b>
+  </p>
+  <p align="justify">
+   Suppose that we want to visit the elements stored in a sequence, like a
+   stack or a queue. Also suppose that we don&rsquo;t want to modify the
+   sequence as we visit its elements. Then we can visit them by using an
+   <i>iterator.</i> An iterator is class whose instances can visit the
+   elements of a sequence. Each iterator has a method called
+   <tt>hasNext</tt> that tests if there are more elements to be visited.
+   It has a method called <tt>next</tt> that returns the next element to
+   be visited, and advances to the following element. It also has a method
+   called <tt>remove</tt> that is supposed to remove the element that is
+   being visited, but we won&rsquo;t use <tt>remove</tt> here.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; We can simplify an iterator&rsquo;s design by
+   assuming that the sequence won&rsquo;t change while we visit its elements.
+   For example, if we use an iterator to visit the elements of a stack, then we
+   assume that the stack will not be <tt>push</tt>&rsquo;ed or
+   <tt>pop</tt>&rsquo;ped. Similarly, if we use an iterator to visit the
+   elements of a queue, then we assume that the queue will not be
+   <tt>enqueue</tt>&rsquo;d or <tt>dequeue</tt>&rsquo;d. If a
+   sequence changes while an iterator visits its elements, then the actions of
+   the iterator become <i>undefined</i>&#8212;which means they don&rsquo;t
+   have to work correctly.
+  </p>
+  <p>
+   <b>2. Implementation.</b>
+  </p>
+  <p align="justify">
+   First, you must place the following line at the top of your file.
+  </p>
+  <blockquote>
+   <p>
+    <tt>import&nbsp;java.util.Iterator;</tt>
+   </p>
+  </blockquote>
+  <p align="justify">
+   This will define the interface <tt>Iterator</tt> as discussed in
+   lectures. You must use Java&rsquo;s <tt>Iterator</tt> interface in your
+   code. You must not write your own <tt>Iterator</tt> interface.
+   <b>I<small>F YOU DO NOT MEET THESE REQUIREMENTS</small>,
+   <small>THEN YOU WILL RECEIVE ZERO POINTS FOR THIS
+   ASSIGNMENT</small>.</b>
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You must then add the following members to
+   the class
+   <a href="ArrayQueue.java">
+    <tt>ArrayQueue,</tt>
+   </a>
+   whose Java source code is available on Canvas. These members implement an
+   iterator for <tt>ArrayQueue</tt>. You are not allowed to modify
+   <tt>ArrayQueue</tt> except to add these additional members.
+  </p>
+  <blockquote>
+   <dl compact="compact">
+    <dt>
+     <p>
+      <tt>private class ArrayQueueIterator implements
+      Iterator&lt;Base&gt;</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This class must be nested inside <tt>ArrayQueue</tt>. An instance of
+      this class may be used to visit the current elements of an instance of
+      <tt>ArrayQueue</tt>. It must have one or more private variables that
+      let it &lsquo;&lsquo;know&rsquo;&rsquo; which elements of
+      <tt>ArrayQueue</tt> are to be visited next. You must decide what
+      those private variables are.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>private ArrayQueueIterator(</tt>...<tt>)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This is <tt>ArrayQueueIterator</tt>&rsquo;s constructor. Of course
+      it must be inside <tt>ArrayQueueIterator</tt>. It must set the
+      <tt>ArrayQueueIterator</tt>&rsquo;s private variables to the values
+      of its parameters. You must decide what these parameters are.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public boolean hasNext()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This method must be inside <tt>ArrayQueueIterator</tt>. It must
+      return <tt>true</tt> if there are more elements of
+      <tt>ArrayQueue</tt> that remain to be visited. It must return
+      <tt>false</tt> otherwise. This method must use
+      <tt>ArrayQueueIterator</tt>&rsquo;s private variables only. Hint:
+      use ideas from <tt>ArrayQueue</tt>&rsquo;s method
+      <tt>isEmpty</tt>.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public Iterator&lt;Base&gt; iterator()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This method must be inside <tt>ArrayQueue</tt>. It must make a new
+      instance of <tt>ArrayQueueIterator</tt> and return it.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public Base next()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This method must be inside <tt>ArrayQueueIterator</tt>. It must
+      return the next <tt>Base</tt> element to be visited from
+      <tt>ArrayQueue</tt>. If no more elements remain to be visited, then
+      it must throw an <tt>IllegalStateException</tt>. This method must
+      use <tt>ArrayQueueIterator</tt>&rsquo;s private variables only.
+      Hint: use ideas from <tt>ArrayQueue</tt>&rsquo;s method
+      <tt>dequeue</tt>.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>public void remove()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This method must be inside <tt>ArrayQueueIterator</tt>. However, it
+      must do <i>nothing</i>&#8212;it&rsquo;s there only because the
+      <tt>Iterator</tt> interface makes us define it. The method
+      <tt>remove</tt> is supposed to remove the element currently being
+      visited by the <tt>ArrayQueueIterator</tt>, but that doesn&rsquo;t
+      make sense for a queue, where elements can be deleted only from the
+      front.
+     </p>
+    </dd>
+   </dl>
+  </blockquote>
+  <p align="justify">
+   Be careful to put these members in the right places. For example, the class
+   <tt>ArrayQueueIterator</tt> must be nested inside the class
+   <tt>ArrayQueue</tt>, and the method <tt>next</tt> must5 be inside
+   the class <tt>ArrayQueueIterator</tt>, metc. If anything is not in its
+   right place, then the iterator will not work.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All of
+   <tt>ArrayQueueIterator</tt>&rsquo;s methods must work in
+   <i>O</i>(1) time. That means you are not allowed to copy
+   <tt>bases</tt> from <tt>ArrayQueue</tt> into a similar array
+   inside <tt>ArrayQueueIterator</tt>. <b>I<small>F YOU DO NOT MEET
+   THIS REQUIREMENT</small>, <small>THEN YOU WILL RECEIVE ZERO POINTS FOR
+   THIS ASSIGNMENT</small>.</b>
+  </p>
+  <p>
+   <b>3. Deliverables.</b>
+  </p>
+  <p align="justify">
+   The file
+   <a href="tests9.java">
+    <tt>tests9.java</tt>
+   </a>
+   contains Java code that performs a series of tests. The tests call methods
+   from the <tt>ArrayQueue</tt> and <tt>ArrayQueueIterator</tt>
+   classes. Each test is followed by a comment that tells how many points it is
+   worth, and what must be printed if it works correctly.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Run the tests, then turn in the Java source
+   code for the modified <tt>ArrayQueue</tt> class, with your
+   <tt>ArrayQueueIterator</tt> class in it. If you don&rsquo;t know how to
+   turn in your work, then ask your lab TA&rsquo;s. Your work must be submitted
+   by <b>11:55 <small>PM</small></b> on <b>Wednesday, November 13,
+   2019</b>.
+  </p>
+ </body>
+</html>

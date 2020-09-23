@@ -1,0 +1,713 @@
+<!-- Created by Bracy 0.4 on Monday, October 7, 2019 at 4:59 PM CDT -->
+<html>
+ <head>
+  <title>
+   CSci Computer Laboratory 5
+  </title>
+  <style>
+   a:active
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   a:link
+    { color: blue;
+      font-weight: bold;
+      text-decoration: none }
+   a:visited
+    { color: purple;
+      font-weight: bold;
+      text-decoration: none }
+   hr
+    { background-color: black; 
+      border: none;
+      color: black;
+      height: 1px }
+   table
+    { border-collapse: collapse }
+  </style>
+ </head>
+ <body bgcolor="#FFFFFF">
+  <p align="center">
+   <b>Computer Laboratory 5</b>
+   <br />
+   <b>CSCI 1913: Introduction to Algorithms,</b>
+   <br />
+   <b>Data Structures, and Program Design</b>
+   <br />
+   <b>October 8&#8211;9, 2019</b>
+  </p>
+  <p>
+   <b>0. Introduction.</b>
+  </p>
+  <p align="justify">
+   A <i>prime number</i> is a positive integer with exactly two distinct
+   divisors: 1 and itself. The <i>Sieve of Eratosthenes</i> (pronounced
+   <i>Era-<small>TOSS</small>-the-knees</i>) is an algorithm for
+   finding prime numbers. It&rsquo;s named after a Greek mathematician of the
+   Third Century <small>BCE</small>. In this lab assignment, you will
+   implement the Sieve as a Java class, and use an instance of that class to
+   print a list of prime numbers.
+  </p>
+  <p>
+   <b>1. Theory.</b>
+  </p>
+  <p align="justify">
+   The Sieve algorithm finds prime numbers between 2 and some positive integer
+   <i>n.</i> Unlike other prime number algorithms, it doesn&rsquo;t need
+   square roots, multiplication, or division. It works in the following way.
+  </p>
+  <ol>
+   <li>
+   <p align="justify">
+    Make an empty set.
+   </p>
+   <li>
+   <p align="justify">
+    Add integers 2, 3, ..., <i>n</i> to the set.
+   </p>
+   <li>
+   <p align="justify">
+    Visit each integer in the set. After you visit an integer, remove all other
+    integers from the set that are multiples of that integer. For example,
+    after you visit the integer 2, you remove the integers 4, 6, 8, etc.
+   </p>
+   <li>
+   <p align="justify">
+    The integers left in the set are primes.
+   </p>
+  </ol>
+  <p align="justify">
+   For example, suppose you want to find the prime numbers between 2 and 25.
+   You start with the following set of numbers.
+  </p>
+  <blockquote>
+   <table cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <p>
+       <b>2</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>3</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>4</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>5</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>6</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>7</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>8</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>9</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>10</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>11</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>12</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>13</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>14</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>15</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>16</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>17</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>18</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>19</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>20</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>21</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>22</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>23</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>24</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>25</b>&nbsp;&nbsp;
+      </p>
+     </td>
+    </tr>
+   </table>
+  </blockquote>
+  <p align="justify">
+   When you visit the integer 2 (it&rsquo;s underlined), you remove all other
+   integers that are multiples of 2 (they turn gray), so the set looks like
+   this.
+  </p>
+  <blockquote>
+   <table cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <p>
+       <b><u>2</u></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>3</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">4</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>5</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">6</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>7</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">8</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>9</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">10</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>11</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">12</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>13</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">14</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>15</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">16</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>17</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">18</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>19</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">20</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>21</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">22</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>23</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">24</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>25</b>&nbsp;&nbsp;
+      </p>
+     </td>
+    </tr>
+   </table>
+  </blockquote>
+  <p align="justify">
+   Then you visit 3, removing integers that are multiples of 3.
+  </p>
+  <blockquote>
+   <table cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <p>
+       <b>2</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><u>3</u></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">4</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>5</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">6</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>7</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">8</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">9</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">10</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>11</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">12</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>13</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">14</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">15</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">16</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>17</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">18</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>19</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">20</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">21</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">22</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>23</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">24</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>25</b>&nbsp;&nbsp;
+      </p>
+     </td>
+    </tr>
+   </table>
+  </blockquote>
+  <p align="justify">
+   And you visit 5, removing integers that are multiples of 5.
+  </p>
+  <blockquote>
+   <table cellpadding="0" cellspacing="0">
+    <tr valign="top">
+     <td>
+      <p>
+       <b>2</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>3</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">4</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><u>5</u></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">6</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>7</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">8</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">9</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">10</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>11</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">12</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>13</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">14</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">15</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">16</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>17</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">18</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>19</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">20</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">21</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">22</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b>23</b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">24</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+     <td>
+      <p>
+       <b><font color="#A9A9A9">25</font></b>&nbsp;&nbsp;
+      </p>
+     </td>
+    </tr>
+   </table>
+  </blockquote>
+  <p align="justify">
+   The Sieve algorithm continues in this way, visiting multiples of 7, 11, 13,
+   etc., all the way up to 25. However, there are no more primes in this set
+   after you visit 5, so you can stop the example here. The numbers that remain
+   in the set are primes.
+   <br>
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can represent a set of integers that can
+   range from 0 to <i>n</i>&#8722;1 as an array of <i>n</i>
+   <tt>boolean</tt> values. Each <tt>boolean</tt> value is either
+   <tt>true</tt> or <tt>false</tt>. An integer <i>k</i> is in
+   the set if the element at index <i>k</i> is <tt>true</tt>. It is
+   not in the set if the element at index <i>k</i> is <tt>false</tt>.
+  </p>
+  <p>
+   <b>2. Implementation.</b>
+  </p>
+  <p align="justify">
+   You must write a class called <tt>Sieve</tt> that has the following
+   methods, with the same names that are shown here.
+  </p>
+  <blockquote>
+   <dl compact="compact">
+    <dt>
+     <p>
+      <tt>Sieve(int max)</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      This is the constructor. It must make an array called
+      <tt>numbers.</tt> The array&rsquo;s length must be <tt>max</tt>
+      and its elements must be <tt>boolean</tt>s. If <tt>max</tt> is
+      less than <tt>2</tt>, then throw an
+      <tt>IllegalArgumentException</tt>. Set the elements at indexes
+      <tt>0</tt> and <tt>1</tt> of <tt>numbers</tt> to
+      <tt>false</tt>. Set all the other elements of <tt>numbers</tt>
+      to <tt>true</tt>.
+      <br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The array <tt>numbers</tt> represents
+      a set of integers that will be tested for primality. Initially,
+      <tt>0</tt> and <tt>1</tt> are not in the set, because you know
+      they cannot be prime. However, all the other numbers, from
+      <tt>2</tt> to
+      <tt>max</tt>&nbsp;<tt>&#8211;</tt>&nbsp;<tt>1</tt>, are
+      still in the set, because you do not know yet if they are prime.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>findPrimes()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Perform the Sieve algorithm described in the theory section. You must
+      visit each <tt>boolean</tt> element of <tt>numbers</tt>. If you
+      visit an element that is <tt>false</tt>, then you must do nothing.
+      However, suppose that you visit an element that is <tt>true</tt>, at
+      index <tt>i</tt>. Then you must visit all the other elements of
+      <tt>numbers</tt> whose indexes are multiples of <tt>i</tt>,
+      setting those elements to <tt>false</tt>.
+     </p>
+    </dd>
+    <dt>
+     <p>
+      <tt>toString()</tt>
+     </p>
+    </dt>
+    <dd>
+     <p align="justify">
+      Start with an empty string. Visit each <tt>boolean</tt> element in
+      <tt>numbers</tt>. If the element is <tt>true</tt>, then add its
+      index to the string, followed by a blank. If the element is
+      <tt>false</tt>, then do nothing. The indexes in the string are the
+      prime numbers found by the Sieve algorithm. Return the string.
+     </p>
+    </dd>
+   </dl>
+  </blockquote>
+  <p align="justify">
+   As a matter of style, never write
+   <i>B</i><tt>&nbsp;==&nbsp;true</tt> or
+   <i>B</i><tt>&nbsp;==&nbsp;false</tt> where <i>B</i> is a
+   <tt>boolean</tt> expression. The expression
+   <i>B</i><tt>&nbsp;==&nbsp;true</tt> always has the same value as
+   <i>B</i>. The expression <i>B</i><tt>&nbsp;==&nbsp;false</tt>
+   can be written better as <tt>!</tt><i>B</i>.
+  </p>
+  <p>
+   <b>3. Tests.</b>
+  </p>
+  <p align="justify">
+   The file
+   <a href="TossTheKnees.java">
+    <tt>TossTheKnees.java</tt>
+   </a>
+   contains Java source code for a driver class. The class contains a
+   <tt>main</tt> method, which in turn contains code that tests your class
+   <tt>Sieve</tt>. Put the Java code for your class <tt>Sieve</tt> in
+   this file, and run it to obtain the results of the tests in
+   <tt>main</tt>. If a test succeeds, then you will receive all the points
+   for that test. If a test fails, then you will recieve no points for it. Your
+   score for this lab will be the sum of the points you get on the tests.
+  </p>
+  <p>
+   <b>3. Deliverables.</b>
+  </p>
+  <p align="justify">
+   You must submit a copy of <tt>TossTheKnees.java</tt> with the code for
+   your <tt>Sieve</tt> class in it. If you have questions about how or
+   where to submit your file, then ask your lab TA. Your work will be due on
+   <b>Wednesday, October 16, 2019</b> at <b>11:55
+   <small>PM</small></b>.
+  </p>
+ </body>
+</html>
